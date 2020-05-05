@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id');
+        const brandId = urlParams.get('brandId');
+        var qty = urlParams.get('quantity');
+        if (typeof id != 'undefined') {
+            if (localStorage.getItem('cart') == null) {
+                var cart = [];
+                var car = {
+                    id: id,
+                    brandId: brandId,
+                    qty: qty
+                };
+                cart.push(car);
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }
+            else {
+                var cart = JSON.parse(localStorage.getItem('cart'));
+                var x = -1;
+                cart.forEach(function (value, index) {
+                    if (id == value.id) {
+                        x = index;
+                    }
+                });
+
+                if (x == -1) {
+                    var car = {
+                        id: id,
+                        brandId: brandId,
+                        qty: qty
+                    }
+                    cart.push(car);
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                }else{
+                    cart[x].qty = Number(qty) + Number(cart[x].qty);
+                    localStorage.setItem('cart',JSON.stringify(cart));
+                }
+            }
+            window.location.href = 'cart.html';
+
+        }
+    </script>
+</body>
+
+</html>
